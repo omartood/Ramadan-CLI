@@ -68,7 +68,7 @@ pub fn run_set(
             latitude: latitude.unwrap_or(current.latitude),
             longitude: longitude.unwrap_or(current.longitude),
             timezone: timezone.unwrap_or(current.timezone),
-            name: location_name.or(Some(current_name)),
+            name: location_name.clone().or(Some(current_name)),
         };
         config.location = Some(loc);
         let (l, n) = config.get_location();
