@@ -54,9 +54,7 @@ fn main() {
     let cli = Cli::parse();
 
     match &cli.command {
-        Commands::Next => {
-            println!("Calculating next prayer time...");
-        }
+        Commands::Next => commands::next::run(),
         Commands::Today => {
             let now = chrono::Local::now();
             let location = models::types::Location {
