@@ -36,7 +36,7 @@ enum Commands {
 enum ConfigCmd {
     /// Show current configuration
     Show,
-    /// Set theme or style options
+    /// Set theme, style, or location
     Set {
         #[arg(long, value_enum)]
         theme: Option<config::settings::Theme>,
@@ -44,6 +44,14 @@ enum ConfigCmd {
         bold_headers: Option<bool>,
         #[arg(long)]
         dim_separators: Option<bool>,
+        #[arg(long)]
+        latitude: Option<f64>,
+        #[arg(long)]
+        longitude: Option<f64>,
+        #[arg(long)]
+        timezone: Option<f64>,
+        #[arg(long)]
+        location_name: Option<String>,
     },
 }
 
@@ -56,12 +64,9 @@ fn main() {
     match &cli.command {
         Commands::Next => commands::next::run(),
         Commands::Today => {
+            let cfg = AppConfig::load();
+            let (location, location_name) = cfg.get_location();
             let now = chrono::Local::now();
-            let location = models::types::Location {
-                latitude: 2.0469,
-                longitude: 45.3182,
-                timezone: 3.0,
-            };
 
             let times = calc::calculate_prayer_times(
                 now.year(),
@@ -72,10 +77,9 @@ fn main() {
                 models::types::Madhab::Shafi,
             );
 
-            let cfg = AppConfig::load();
             println!(
                 "\n{}",
-                style::title(&cfg, "Salaada Maanta (Mogadishu):")
+                style::title(&cfg, &format!("Salaada Maanta ({location_name}):"))
             );
             println!(
                 "{} {}",
@@ -100,7 +104,19 @@ fn main() {
                 theme,
                 bold_headers,
                 dim_separators,
-            } => commands::config::run_set(*theme, *bold_headers, *dim_separators),
+                latitude,
+                longitude,
+                timezone,
+                location_name,
+            } => commands::config::run_set(
+                *theme,
+                *bold_headers,
+                *dim_separators,
+                *latitude,
+                *longitude,
+                *timezone,
+                location_name.clone(),
+            ),
         },
     }
 }

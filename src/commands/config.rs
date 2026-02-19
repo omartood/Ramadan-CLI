@@ -1,9 +1,10 @@
-use crate::config::settings::{AppConfig, Theme};
+use crate::config::settings::{AppConfig, LocationConfig, Theme};
 use colored::Colorize;
 
 pub fn run_show() {
     let config = AppConfig::load();
     let path = AppConfig::config_path().unwrap_or_else(|| std::path::PathBuf::from("(unknown)"));
+    let (loc, name) = config.get_location();
 
     println!("{}", "Configuration (Config)".bold().cyan());
     println!("{}", "-----------------------------".dimmed());
@@ -23,15 +24,21 @@ pub fn run_show() {
         "Dim separators:".dimmed(),
         if config.dim_separators { "yes" } else { "no" }
     );
+    println!("  {} {} ({}, {}, UTC{:+})", "Location:".dimmed(), name, loc.latitude, loc.longitude, loc.timezone);
     println!();
     println!("{}", "Available themes: dark, light, minimal, colorful".dimmed());
-    println!(
-        "{}",
-        "Change with: ramadan config set --theme <name>".dimmed()
-    );
+    println!("{}", "Location: ramadan config set --latitude <n> --longitude <n> --timezone <n> [--location-name <name>]".dimmed());
 }
 
-pub fn run_set(theme: Option<Theme>, bold_headers: Option<bool>, dim_separators: Option<bool>) {
+pub fn run_set(
+    theme: Option<Theme>,
+    bold_headers: Option<bool>,
+    dim_separators: Option<bool>,
+    latitude: Option<f64>,
+    longitude: Option<f64>,
+    timezone: Option<f64>,
+    location_name: Option<String>,
+) {
     let mut config = AppConfig::load();
 
     if let Some(t) = theme {
@@ -55,8 +62,36 @@ pub fn run_set(theme: Option<Theme>, bold_headers: Option<bool>, dim_separators:
         );
     }
 
-    if theme.is_none() && bold_headers.is_none() && dim_separators.is_none() {
-        println!("{}", "No options given. Use --theme, --bold-headers, --dim-separators".yellow());
+    if latitude.is_some() || longitude.is_some() || timezone.is_some() || location_name.is_some() {
+        let (current, current_name) = config.get_location();
+        let loc = LocationConfig {
+            latitude: latitude.unwrap_or(current.latitude),
+            longitude: longitude.unwrap_or(current.longitude),
+            timezone: timezone.unwrap_or(current.timezone),
+            name: location_name.or(Some(current_name)),
+        };
+        config.location = Some(loc);
+        let (l, n) = config.get_location();
+        println!(
+            "{} {} (lat: {}, long: {}, UTC{:+})",
+            "Location set:".green(),
+            n,
+            l.latitude,
+            l.longitude,
+            l.timezone
+        );
+    }
+
+    let any_set = theme.is_some()
+        || bold_headers.is_some()
+        || dim_separators.is_some()
+        || latitude.is_some()
+        || longitude.is_some()
+        || timezone.is_some()
+        || location_name.is_some();
+
+    if !any_set {
+        println!("{}", "No options given. Use --theme, --bold-headers, --dim-separators, --latitude, --longitude, --timezone, --location-name".yellow());
         return;
     }
 

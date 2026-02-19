@@ -1,7 +1,7 @@
 use chrono::{Datelike, Local, NaiveDate, NaiveTime};
 use crate::calc;
 use crate::config::settings::{AppConfig, style};
-use crate::models::types::{CalculationMethod, Location, Madhab};
+use crate::models::types::{CalculationMethod, Madhab};
 
 const PRAYER_ORDER: [(&str, fn(&crate::models::types::PrayerTimes) -> &str); 6] = [
     ("Fajr", |t| &t.fajr),
@@ -13,13 +13,10 @@ const PRAYER_ORDER: [(&str, fn(&crate::models::types::PrayerTimes) -> &str); 6] 
 ];
 
 pub fn run() {
+    let cfg = AppConfig::load();
+    let (location, _name) = cfg.get_location();
     let now = Local::now();
     let now_naive = now.naive_local();
-    let location = Location {
-        latitude: 2.0469,
-        longitude: 45.3182,
-        timezone: 3.0,
-    };
     let method = CalculationMethod::MuslimWorldLeague;
     let madhab = Madhab::Shafi;
 
@@ -42,7 +39,6 @@ pub fn run() {
                 let left = prayer_dt - now_naive;
                 let hours = left.num_hours();
                 let mins = left.num_minutes() % 60;
-                let cfg = AppConfig::load();
                 println!("{}", style::title(&cfg, "Waxa soo socda (Next prayer)"));
                 println!(
                     "{} {} {}",
@@ -69,7 +65,6 @@ pub fn run() {
     let left = tomorrow_fajr - now_naive;
     let hours = left.num_hours();
     let mins = left.num_minutes() % 60;
-    let cfg = AppConfig::load();
     println!("{}", style::title(&cfg, "Waxa soo socda (Next prayer)"));
     println!(
         "{} {} {}",

@@ -13,6 +13,7 @@
 - **Next prayer** — `ramadan next` shows the coming prayer and countdown (e.g. *Maghrib in 2h 15m*)
 - **Somali-friendly** — Prayer names and welcome message in Somali (e.g. *Salaada Maanta*, *Qorraxda*, *Cishaha*)
 - **Themes** — Dark, light, minimal, and colorful terminal styles
+- **Location** — Set your city via config (latitude, longitude, timezone, display name); default Mogadishu
 - **Customization** — Bold headers, dim separators, config stored in one file
 - **Multiple methods** — Muslim World League, Umm Al-Qura, Egyptian (calculation logic in place)
 
@@ -55,6 +56,7 @@ cargo install --path .
 | `ramadan config set --theme <name>` | Set theme: `dark`, `light`, `minimal`, `colorful` |
 | `ramadan config set --bold-headers false` | Turn off bold headers |
 | `ramadan config set --dim-separators false` | Turn off dim separators |
+| `ramadan config set --latitude <n> --longitude <n> --timezone <n> [--location-name <name>]` | Set location for prayer times |
 
 ### Example output
 
@@ -91,18 +93,37 @@ Config is stored in:
 | `minimal` | No colors, plain text |
 | `colorful` | Orange and light blue accents |
 
+### Location
+
+Prayer times use the location in config (default: Mogadishu). Set your own:
+
+```bash
+# Example: Hargeisa (latitude 9.5, longitude 44.0, UTC+3)
+ramadan config set --latitude 9.5 --longitude 44.0 --timezone 3 --location-name "Hargeisa"
+
+# Or set only the display name (keep current coordinates)
+ramadan config set --location-name "My City"
+```
+
 ### Example config
 
 ```toml
 theme = "dark"
 bold_headers = true
 dim_separators = true
+
+[location]
+latitude = 2.0469
+longitude = 45.3182
+timezone = 3.0
+name = "Mogadishu"
 ```
 
 Change anytime with:
 
 ```bash
 ramadan config set --theme light
+ramadan config set --latitude 9.5 --longitude 44.0 --timezone 3 --location-name "Hargeisa"
 ramadan config show
 ```
 
@@ -115,8 +136,8 @@ Ideas you can add so the CLI becomes even more useful and impressive:
 | Idea | Description |
 |------|-------------|
 | **Next prayer** | Done — `ramadan next` shows the next prayer and countdown (e.g. *Maghrib in 2h 15m*). |
+| **Location in config** | Done — set `--latitude`, `--longitude`, `--timezone`, `--location-name` in config. |
 | **Month view** | `ramadan month` — full table of prayer times for the current month (terminal table or CSV). |
-| **Location in config** | Let users set city or lat/long/timezone in `config.toml` instead of hardcoded Mogadishu. |
 | **Preset cities** | Quick picks: Mogadishu, Hargeisa, Nairobi, Djibouti, etc., e.g. `ramadan today --city mogadishu`. |
 | **Hijri date** | Show Islamic (Hijri) date next to Gregorian (e.g. *15 Shaʻban 1446*). |
 | **Qibla direction** | Show compass angle from North for the configured location. |
