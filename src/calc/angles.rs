@@ -21,6 +21,7 @@ pub fn to_degrees(radians: f64) -> f64 {
 }
 
 /// Calculate the arithmetic mean of two angles in degrees
+#[allow(dead_code)]
 pub fn mean_angle(a1: f64, a2: f64) -> f64 {
     normalize_degrees(a1 + (a2 - a1) / 2.0)
 }

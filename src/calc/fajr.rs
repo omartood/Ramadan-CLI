@@ -1,5 +1,4 @@
 use crate::calc::angles::{to_radians, to_degrees};
-use crate::calc::solar::SolarPosition;
 
 /// Calculate the hour angle for a given altitude and declination
 /// Source: Astronomical Algorithms - Jean Meeus
