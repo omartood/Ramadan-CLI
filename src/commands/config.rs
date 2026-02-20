@@ -6,9 +6,9 @@ pub fn run_show() {
     let path = AppConfig::config_path().unwrap_or_else(|| std::path::PathBuf::from("(unknown)"));
     let (loc, name) = config.get_location();
 
-    println!("{}", "Configuration (Config)".bold().cyan());
+    println!("{}", "Qaabeynta (Config)".bold().cyan());
     println!("{}", "-----------------------------".dimmed());
-    println!("  {} {}", "Config file:".dimmed(), path.display());
+    println!("  {} {}", "Faylka config:".dimmed(), path.display());
     println!(
         "  {} {}",
         "Theme:".dimmed(),
@@ -16,18 +16,18 @@ pub fn run_show() {
     );
     println!(
         "  {} {}",
-        "Bold headers:".dimmed(),
-        if config.bold_headers { "yes" } else { "no" }
+        "Cinwaan bold:".dimmed(),
+        if config.bold_headers { "haa" } else { "maya" }
     );
     println!(
         "  {} {}",
-        "Dim separators:".dimmed(),
-        if config.dim_separators { "yes" } else { "no" }
+        "Xariiq dim:".dimmed(),
+        if config.dim_separators { "haa" } else { "maya" }
     );
-    println!("  {} {} ({}, {}, UTC{:+})", "Location:".dimmed(), name, loc.latitude, loc.longitude, loc.timezone);
+    println!("  {} {} ({}, {}, UTC{:+})", "Goobta:".dimmed(), name, loc.latitude, loc.longitude, loc.timezone);
     println!();
-    println!("{}", "Available themes: dark, light, minimal, colorful".dimmed());
-    println!("{}", "Location: ramadan config set --latitude <n> --longitude <n> --timezone <n> [--location-name <name>]".dimmed());
+    println!("{}", "Theme-yada: dark, light, minimal, colorful".dimmed());
+    println!("{}", "Goobta: ramadan config set --latitude <n> --longitude <n> --timezone <n> [--location-name <magac>]".dimmed());
 }
 
 pub fn run_set(
@@ -43,22 +43,22 @@ pub fn run_set(
 
     if let Some(t) = theme {
         config.theme = t;
-        println!("{} {}", "Theme set to:".green(), theme_display_name(t));
+        println!("{} {}", "Theme waa la beddelay:".green(), theme_display_name(t));
     }
     if let Some(b) = bold_headers {
         config.bold_headers = b;
         println!(
             "{} {}",
-            "Bold headers:".green(),
-            if b { "enabled" } else { "disabled" }
+            "Cinwaan bold:".green(),
+            if b { "furan" } else { "xiran" }
         );
     }
     if let Some(d) = dim_separators {
         config.dim_separators = d;
         println!(
             "{} {}",
-            "Dim separators:".green(),
-            if d { "enabled" } else { "disabled" }
+            "Xariiq dim:".green(),
+            if d { "furan" } else { "xiran" }
         );
     }
 
@@ -74,7 +74,7 @@ pub fn run_set(
         let (l, n) = config.get_location();
         println!(
             "{} {} (lat: {}, long: {}, UTC{:+})",
-            "Location set:".green(),
+            "Goobta waa la dejiyay:".green(),
             n,
             l.latitude,
             l.longitude,
@@ -91,16 +91,16 @@ pub fn run_set(
         || location_name.is_some();
 
     if !any_set {
-        println!("{}", "No options given. Use --theme, --bold-headers, --dim-separators, --latitude, --longitude, --timezone, --location-name".yellow());
+        println!("{}", "Lama bixin options. Isticmaal: --theme, --bold-headers, --dim-separators, --latitude, --longitude, --timezone, --location-name".yellow());
         return;
     }
 
     match config.save() {
         Ok(()) => {
-            println!("{}", "Configuration saved.".green());
+            println!("{}", "Qaabeynta waa la keydiyay.".green());
         }
         Err(e) => {
-            eprintln!("{} {}", "Error saving config:".red(), e);
+            eprintln!("{} {}", "Qalad keydinta config:".red(), e);
         }
     }
 }

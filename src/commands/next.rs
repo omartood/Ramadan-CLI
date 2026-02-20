@@ -38,13 +38,14 @@ pub fn run() {
             if prayer_dt > now_naive {
                 let left = prayer_dt - now_naive;
                 let hours = left.num_hours();
-                let mins = left.num_minutes() % 60;
-                println!("{}", style::title(&cfg, "Waxa soo socda (Next prayer)"));
+                let mins = (left.num_minutes() % 60).abs();
+                let secs = (left.num_seconds() % 60).abs();
+                println!("{}", style::title(&cfg, "Salaadda soo socota"));
                 println!(
                     "{} {} {}",
                     style::label(&cfg, &format!("{name}:")),
                     style::value(&cfg, time_str),
-                    style::value(&cfg, &format!("({}h {}m)", hours, mins))
+                    style::value(&cfg, &format!("({} saac {} dq {} il)", hours, mins, secs))
                 );
                 return;
             }
@@ -64,12 +65,13 @@ pub fn run() {
     let tomorrow_fajr = tomorrow.and_time(fajr_t);
     let left = tomorrow_fajr - now_naive;
     let hours = left.num_hours();
-    let mins = left.num_minutes() % 60;
-    println!("{}", style::title(&cfg, "Waxa soo socda (Next prayer)"));
+    let mins = (left.num_minutes() % 60).abs();
+    let secs = (left.num_seconds() % 60).abs();
+    println!("{}", style::title(&cfg, "Salaadda soo socota"));
     println!(
         "{} {} {}",
         style::label(&cfg, "Fajr (berrito):"),
         style::value(&cfg, &tomorrow_times.fajr),
-        style::value(&cfg, &format!("({}h {}m)", hours, mins))
+        style::value(&cfg, &format!("({} saac {} dq {} il)", hours, mins, secs))
     );
 }

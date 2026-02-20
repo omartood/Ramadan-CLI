@@ -11,7 +11,7 @@ use config::settings::{AppConfig, style};
 
 #[derive(Parser)]
 #[command(name = "ramadan")]
-#[command(about = "A fast, offline-first Ramadan CLI tool for prayer times", long_about = None)]
+#[command(about = "Qalab CLI Ramadan ah – wakhtiyada salaadda (offline)", long_about = None)]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
@@ -19,13 +19,13 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Show the next prayer time
+    /// Tus salaadda soo socota iyo wakhtiga ka hartay
     Next,
-    /// Show today's prayer times
+    /// Tus salaaddyada maanta
     Today,
-    /// Show the prayer times for the current month
+    /// Tus salaaddyada bisha kan
     Month,
-    /// Manage configuration (themes, bold headers, etc.)
+    /// Maar qaabeynta (theme, goobta, iwm.)
     Config {
         #[command(subcommand)]
         cmd: Option<ConfigCmd>,
@@ -34,9 +34,9 @@ enum Commands {
 
 #[derive(Subcommand)]
 enum ConfigCmd {
-    /// Show current configuration
+    /// Tus qaabeynta hadda
     Show,
-    /// Set theme, style, or location
+    /// Deji theme, style, ama goobta
     Set {
         #[arg(long, value_enum)]
         theme: Option<config::settings::Theme>,
@@ -96,7 +96,7 @@ fn main() {
             println!("{}", style::separator(&cfg));
         }
         Commands::Month => {
-            println!("Calculating this month's prayer times...");
+            println!("Bisha kan: salaaddyada waa la hisaabaynayaa...");
         }
         Commands::Config { cmd } => match cmd.as_ref().unwrap_or(&ConfigCmd::Show) {
             ConfigCmd::Show => commands::config::run_show(),
