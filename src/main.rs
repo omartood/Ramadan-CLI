@@ -7,7 +7,7 @@ mod models;
 mod config;
 mod tui;
 
-use config::settings::{AppConfig, style};
+use config::settings::AppConfig;
 
 #[derive(Parser)]
 #[command(name = "ramadan")]
@@ -57,7 +57,7 @@ enum ConfigCmd {
 
 fn main() {
     let config = AppConfig::load();
-    println!("{}", style::welcome(&config));
+    print!("{}", tui::render::render_welcome(&config));
 
     let cli = Cli::parse();
 
@@ -77,23 +77,7 @@ fn main() {
                 models::types::Madhab::Shafi,
             );
 
-            println!(
-                "\n{}",
-                style::title(&cfg, &format!("Salaada Maanta ({location_name}):"))
-            );
-            println!(
-                "{} {}",
-                style::label(&cfg, "Taariikhda:"),
-                style::value(&cfg, &times.date)
-            );
-            println!("{}", style::separator(&cfg));
-            println!("{}", style::prayer_line(&cfg, "Fajr    ", &times.fajr));
-            println!("{}", style::prayer_line(&cfg, "Qorraxda", &times.sunrise));
-            println!("{}", style::prayer_line(&cfg, "Dhuhr   ", &times.dhuhr));
-            println!("{}", style::prayer_line(&cfg, "Asr     ", &times.asr));
-            println!("{}", style::prayer_line(&cfg, "Maghrib ", &times.maghrib));
-            println!("{}", style::prayer_line(&cfg, "Cishaha ", &times.isha));
-            println!("{}", style::separator(&cfg));
+            print!("{}", tui::render::render_today(&cfg, &location_name, &times));
         }
         Commands::Month => {
             println!("Bisha kan: salaaddyada waa la hisaabaynayaa...");

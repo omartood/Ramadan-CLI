@@ -1,7 +1,8 @@
 use chrono::{Datelike, Local, NaiveDate, NaiveTime};
 use crate::calc;
-use crate::config::settings::{AppConfig, style};
+use crate::config::settings::AppConfig;
 use crate::models::types::{CalculationMethod, Madhab};
+use crate::tui;
 
 const PRAYER_ORDER: [(&str, fn(&crate::models::types::PrayerTimes) -> &str); 6] = [
     ("Fajr", |t| &t.fajr),
@@ -40,13 +41,9 @@ pub fn run() {
                 let hours = left.num_hours();
                 let mins = (left.num_minutes() % 60).abs();
                 let secs = (left.num_seconds() % 60).abs();
-                println!("{}", style::title(&cfg, "Salaadda soo socota"));
-                println!(
-                    "{} {} {}",
-                    style::label(&cfg, &format!("{name}:")),
-                    style::value(&cfg, time_str),
-                    style::value(&cfg, &format!("({} saac {} dq {} il)", hours, mins, secs))
-                );
+                print!("{}", tui::render::render_next(
+                    &cfg, name, time_str, hours, mins, secs, false
+                ));
                 return;
             }
         }
@@ -67,11 +64,7 @@ pub fn run() {
     let hours = left.num_hours();
     let mins = (left.num_minutes() % 60).abs();
     let secs = (left.num_seconds() % 60).abs();
-    println!("{}", style::title(&cfg, "Salaadda soo socota"));
-    println!(
-        "{} {} {}",
-        style::label(&cfg, "Fajr (berrito):"),
-        style::value(&cfg, &tomorrow_times.fajr),
-        style::value(&cfg, &format!("({} saac {} dq {} il)", hours, mins, secs))
-    );
+    print!("{}", tui::render::render_next(
+        &cfg, "Fajr", &tomorrow_times.fajr, hours, mins, secs, true
+    ));
 }

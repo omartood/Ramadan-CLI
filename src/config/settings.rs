@@ -122,84 +122,8 @@ impl AppConfig {
     }
 }
 
-/// Apply theme/style to terminal output (ANSI via `colored` crate)
+/// Old style module kept minimal – the new rendering lives in tui::render
 pub mod style {
-    use colored::Colorize;
-
-    use super::{AppConfig, Theme};
-
-    fn bold_if(s: &str, bold: bool) -> String {
-        if bold {
-            s.bold().to_string()
-        } else {
-            s.to_string()
-        }
-    }
-
-    fn dim_if(s: &str, dim: bool) -> String {
-        if dim {
-            s.dimmed().to_string()
-        } else {
-            s.to_string()
-        }
-    }
-
-    pub fn welcome(config: &AppConfig) -> String {
-        let s = "Ku soo dhawaaw Ramadan CLI 🌙";
-        match config.theme {
-            Theme::Dark => s.cyan().to_string(),
-            Theme::Light => s.blue().bold().to_string(),
-            Theme::Minimal => s.to_string(),
-            Theme::Colorful => s.truecolor(255, 179, 71).bold().to_string(), // warm orange
-        }
-    }
-
-    pub fn title(config: &AppConfig, text: &str) -> String {
-        let s = bold_if(text, config.bold_headers);
-        match config.theme {
-            Theme::Dark => s.cyan().to_string(),
-            Theme::Light => s.blue().to_string(),
-            Theme::Minimal => s,
-            Theme::Colorful => s.truecolor(255, 179, 71).to_string(),
-        }
-    }
-
-    pub fn label(config: &AppConfig, text: &str) -> String {
-        let s = bold_if(text, config.bold_headers);
-        match config.theme {
-            Theme::Dark => s.green().to_string(),
-            Theme::Light => s.blue().dimmed().to_string(),
-            Theme::Minimal => s,
-            Theme::Colorful => s.truecolor(135, 206, 250).to_string(), // light blue
-        }
-    }
-
-    pub fn value(config: &AppConfig, text: &str) -> String {
-        match config.theme {
-            Theme::Dark => text.white().to_string(),
-            Theme::Light => text.truecolor(30, 30, 30).to_string(),
-            Theme::Minimal => text.to_string(),
-            Theme::Colorful => text.truecolor(230, 230, 230).to_string(),
-        }
-    }
-
-    pub fn separator(config: &AppConfig) -> String {
-        let s = "-----------------------------";
-        let s = dim_if(s, config.dim_separators);
-        match config.theme {
-            Theme::Dark => s.dimmed().to_string(),
-            Theme::Light => s.dimmed().to_string(),
-            Theme::Minimal => s,
-            Theme::Colorful => s.truecolor(100, 100, 100).to_string(),
-        }
-    }
-
-    /// Format a line like "Fajr:     05:23"
-    pub fn prayer_line(config: &AppConfig, name: &str, time: &str) -> String {
-        format!(
-            "{} {}",
-            label(config, &format!("{name}:")),
-            value(config, time)
-        )
-    }
+    // Retained for potential future use but all rendering now uses tui::render
 }
+

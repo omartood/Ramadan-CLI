@@ -1,4 +1,5 @@
 use crate::config::settings::{AppConfig, LocationConfig, Theme};
+use crate::tui;
 use colored::Colorize;
 
 pub fn run_show() {
@@ -6,28 +7,14 @@ pub fn run_show() {
     let path = AppConfig::config_path().unwrap_or_else(|| std::path::PathBuf::from("(unknown)"));
     let (loc, name) = config.get_location();
 
-    println!("{}", "Qaabeynta (Config)".bold().cyan());
-    println!("{}", "-----------------------------".dimmed());
-    println!("  {} {}", "Faylka config:".dimmed(), path.display());
-    println!(
-        "  {} {}",
-        "Theme:".dimmed(),
-        theme_display_name(config.theme)
-    );
-    println!(
-        "  {} {}",
-        "Cinwaan bold:".dimmed(),
-        if config.bold_headers { "haa" } else { "maya" }
-    );
-    println!(
-        "  {} {}",
-        "Xariiq dim:".dimmed(),
-        if config.dim_separators { "haa" } else { "maya" }
-    );
-    println!("  {} {} ({}, {}, UTC{:+})", "Goobta:".dimmed(), name, loc.latitude, loc.longitude, loc.timezone);
-    println!();
-    println!("{}", "Theme-yada: dark, light, minimal, colorful".dimmed());
-    println!("{}", "Goobta: ramadan config set --latitude <n> --longitude <n> --timezone <n> [--location-name <magac>]".dimmed());
+    print!("{}", tui::render::render_config(
+        &config,
+        &path.display().to_string(),
+        &name,
+        loc.latitude,
+        loc.longitude,
+        loc.timezone,
+    ));
 }
 
 pub fn run_set(
