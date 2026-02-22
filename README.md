@@ -10,12 +10,13 @@
 ## Features
 
 - **Offline-first** — No API keys or internet; times are calculated locally
-- **Next prayer** — `ramadan next` shows the coming prayer and countdown (e.g. *Maghrib in 2h 15m*)
-- **Somali-friendly** — Prayer names and welcome message in Somali (e.g. *Salaada Maanta*, *Qorraxda*, *Cishaha*)
-- **Themes** — Dark, light, minimal, and colorful terminal styles
-- **Location** — Set your city via config (latitude, longitude, timezone, display name); default Mogadishu
-- **Customization** — Bold headers, dim separators, config stored in one file
-- **Multiple methods** — Muslim World League, Umm Al-Qura, Egyptian (calculation logic in place)
+- **Beautiful UI** — Stunning card-style output using box-drawing characters (╭─╮│╰─╯)
+- **Prayer Icons** — Islamic emojis (🌅 ☀️ 🕐 🌤️ 🌇 ⭐) for each prayer time
+- **Next prayer** — `ramadan next` shows a styled card with countdown and **progress bar**
+- **Somali-friendly** — Prayer names and messages in Somali (e.g. _Salaada Maanta_, _Qorraxda_)
+- **Themes** — Dark, light, minimal, and colorful terminal styles with gradient-like accents
+- **Location** — Set your city via config (latitude, longitude, timezone, display name)
+- **Multiple methods** — Muslim World League, Umm Al-Qura, Egyptian calculations
 
 ---
 
@@ -47,32 +48,37 @@ cargo install --path .
 
 ## Usage
 
-| Command | Description |
-|--------|-------------|
-| `ramadan today` | Show today’s prayer times (default: Mogadishu) |
-| `ramadan next` | Show the next prayer and countdown (e.g. *Maghrib in 2h 15m*) |
-| `ramadan month` | Show this month’s prayer times *(coming soon)* |
-| `ramadan config show` | Show current config (theme, paths) |
-| `ramadan config set --theme <name>` | Set theme: `dark`, `light`, `minimal`, `colorful` |
-| `ramadan config set --bold-headers false` | Turn off bold headers |
-| `ramadan config set --dim-separators false` | Turn off dim separators |
-| `ramadan config set --latitude <n> --longitude <n> --timezone <n> [--location-name <name>]` | Set location for prayer times |
+| Command                                                                                     | Description                                       |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| `ramadan today`                                                                             | Show today’s prayer times in a beautiful card     |
+| `ramadan next`                                                                              | Show the next prayer, countdown, and progress bar |
+| `ramadan month`                                                                             | Show this month’s prayer times _(coming soon)_    |
+| `ramadan config show`                                                                       | Show current settings in a styled card            |
+| `ramadan config set --theme <name>`                                                         | Set theme: `dark`, `light`, `minimal`, `colorful` |
+| `ramadan config set --latitude <n> --longitude <n> --timezone <n> [--location-name <name>]` | Set your location                                 |
 
 ### Example output
 
 ```
-Ku soo dhawaaw Ramadan CLI 🌙
+  ╭────────────────────────────────────────╮
+  │     🌙 Ku soo dhawaaw Ramadan CLI    │
+  ╰────────────────────────────────────────╯
 
-Salaada Maanta (Mogadishu):
-Taariikhda: 2025-02-19
------------------------------
-Fajr:     05:23
-Qorraxda: 06:38
-Dhuhr:    12:35
-Asr:      15:55
-Maghrib:  18:28
-Cishaha:  19:38
------------------------------
+  ╭────────────────────────────────────────╮
+  │                                       │
+  │    🕌 Salaada Maanta (Mogadishu)    │
+  │    📅 Taariikhda:  2026-02-22       │
+  │                                       │
+  ├────────────────────────────────────────┤
+  │                                       │
+  │    🌅 Fajr       : 05:01              │
+  │    ☀️  Qorraxda   : 06:10              │
+  │    🕐 Dhuhr      : 12:12              │
+  │    🌤️  Asr        : 14:51              │
+  │    🌇 Maghrib    : 18:14              │
+  │    ⭐ Cishaha    : 19:20              │
+  │                                       │
+  ╰────────────────────────────────────────╯
 ```
 
 ---
@@ -86,12 +92,12 @@ Config is stored in:
 
 ### Themes
 
-| Theme | Style |
-|-------|--------|
-| `dark` | Cyan/green on dark background (default) |
-| `light` | Blue/bold for light terminals |
-| `minimal` | No colors, plain text |
-| `colorful` | Orange and light blue accents |
+| Theme      | Style                                           |
+| ---------- | ----------------------------------------------- |
+| `dark`     | Cyan/green accents on dark background (default) |
+| `light`    | Blue/bold for light terminals                   |
+| `minimal`  | No colors, plain text                           |
+| `colorful` | Vibrant orange, pink, and light blue accents    |
 
 ### Location
 
@@ -131,30 +137,20 @@ ramadan config show
 
 ## Roadmap — Making it amazing
 
-Ideas you can add so the CLI becomes even more useful and impressive:
-
-| Idea | Description |
-|------|-------------|
-| **Next prayer** | Done — `ramadan next` shows the next prayer and countdown (e.g. *Maghrib in 2h 15m*). |
-| **Location in config** | Done — set `--latitude`, `--longitude`, `--timezone`, `--location-name` in config. |
-| **Month view** | `ramadan month` — full table of prayer times for the current month (terminal table or CSV). |
-| **Preset cities** | Quick picks: Mogadishu, Hargeisa, Nairobi, Djibouti, etc., e.g. `ramadan today --city mogadishu`. |
-| **Hijri date** | Show Islamic (Hijri) date next to Gregorian (e.g. *15 Shaʻban 1446*). |
-| **Qibla direction** | Show compass angle from North for the configured location. |
-| **Language toggle** | Config option: labels in Somali, English, or Arabic. |
-| **Export** | `ramadan month --export csv` or `--export json` for use in other tools. |
-| **TUI dashboard** | Interactive view: today + next prayer + config (you already have a `tui` module). |
-| **Desktop notifications** | Optional reminder a few minutes before prayer (e.g. via `notify-rust`). |
-
-Contributions and feature ideas are welcome.
+| Idea                | Status     | Description                                     |
+| ------------------- | ---------- | ----------------------------------------------- |
+| **Beautiful TUI**   | ✅ Done    | Card-style output with box-drawing and icons.   |
+| **Next prayer bar** | ✅ Done    | `ramadan next` shows a visual progress bar.     |
+| **Month view**      | ⏳ Planned | `ramadan month` — full table of prayer times.   |
+| **Hijri date**      | ⏳ Planned | Show Islamic date next to Gregorian.            |
+| **Qibla direction** | ⏳ Planned | Show compass angle for your location.           |
+| **Preset cities**   | ⏳ Planned | Quick picks: Mogadishu, Hargeisa, Nairobi, etc. |
 
 ---
 
 ## Building from source
 
 ```bash
-git clone https://github.com/omartood/cli-ramadam.git
-cd cli-ramadam
 cargo build --release
 ```
 
@@ -168,4 +164,4 @@ MIT — see [LICENSE](LICENSE).
 
 ---
 
-*Barakallahu feek.*
+_Barakallahu feek._
